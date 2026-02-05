@@ -1,20 +1,37 @@
-const axios = require('axios');
+import axios from 'axios'
+import cron from 'node-cron'
+import { BASE_URL } from './config.js'
 
-const URL = 'http://localhost:8080/repos//OPERACION_GUZMAN/v2/dashguzman.php';
+// Lista de endpoints
+const endpoints = [
+    '/OPERACION_GUZMAN/v2/dashguzman.php',
+    '/OPERACION_GUZMAN/v2/doblessinreportarguzman.php',
+    '/OPERACION_GUZMAN/v2/dashguzmandesv.php',
+    '/OPERACION_GUZMAN/v2/dashguzmancajasdobles.php',
+    '/OPERACION_GUZMAN/v2/dashguzmancajas.php'
+];
 
-const ejecutarPeticion = async () => {
-    console.log(`[${new Date().toLocaleString()}] Ejecutando petición...`);
+async function ejecutarPeticiones() {
+    console.log(BASE_URL);
+    
+    console.log(`\n[${new Date().toLocaleString()}] Iniciando ciclo de peticiones`);
 
-    try {
-        const response = await axios.get(URL);
-        console.log('Respuesta:', response.data);
-    } catch (error) {
-        console.error('Error en la petición:', error.message);
+    for (const endpoint of endpoints) {
+        const url = `${BASE_URL}${endpoint}`;
+
+        try {
+            const response = await axios.get(url);
+            console.log(`✔ ${endpoint} → OK`);
+            // Si quieres ver la respuesta:
+            // console.log(response.data);
+        } catch (error) {
+            console.error(`✖ ${endpoint} → ERROR:`, error.message);
+        }
     }
-};
+}
 
-// Cada 60 segundos
-setInterval(ejecutarPeticion, 60 * 1000);
+// Ejecutar cada minuto
+cron.schedule('* * * * *', ejecutarPeticiones);
 
-// Ejecuta inmediatamente al iniciar
-ejecutarPeticion();
+// Ejecutar inmediatamente al iniciar
+ejecutarPeticiones();
