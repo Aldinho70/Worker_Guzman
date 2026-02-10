@@ -4,11 +4,11 @@ import { BASE_URL } from './config.js'
 
 // Lista de endpoints
 const endpoints = [
-    '/OPERACION_GUZMAN/v2/dashguzman.php',
-    '/OPERACION_GUZMAN/v2/doblessinreportarguzman.php',
-    '/OPERACION_GUZMAN/v2/dashguzmandesv.php',
-    '/OPERACION_GUZMAN/v2/dashguzmancajasdobles.php',
-    '/OPERACION_GUZMAN/v2/dashguzmancajas.php'
+    'v3/dashguzman.php',/** */
+    'v3/dashguzmancajas.php',/** */
+    'v3/dashguzmancajasdobles.php',/** */
+    'v3/doblessinreportarguzman.php',/** */
+    'v3/dashguzmandesv.php',
 ];
 
 async function ejecutarPeticiones() {
@@ -23,15 +23,14 @@ async function ejecutarPeticiones() {
             const response = await axios.get(url);
             console.log(`✔ ${endpoint} → OK`);
             // Si quieres ver la respuesta:
-            // console.log(response.data);
         } catch (error) {
-            console.error(`✖ ${endpoint} → ERROR:`, error.message);
+            console.log(`✖ ${endpoint} → ERROR:`, error.message);
         }
     }
 }
 
 // Ejecutar cada minuto
-cron.schedule('* * * * *', ejecutarPeticiones);
+cron.schedule('40 * * * * *', ejecutarPeticiones);
 
 // Ejecutar inmediatamente al iniciar
 ejecutarPeticiones();

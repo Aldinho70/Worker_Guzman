@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://localhost:8080/repos';
+export const BASE_URL = 'http://localhost:8080/repos/API.GUZMAN.V2/';
